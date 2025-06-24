@@ -1,0 +1,63 @@
+apiVersion: 1
+groups:
+- name: MDS
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: fenfebart998ge
+    title: CephFilesystemOffline
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: ceph_health_detail{name="MDS_ALL_DOWN"} > 0
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 1m
+    keepFiringFor: 2m
+    annotations:
+      description: All MDS ranks are unavailable. The MDS daemons managing metadata
+        are down, rendering the filesystem offline.
+      summary: CephFS filesystem is offline
+    labels:
+      severity: critical
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

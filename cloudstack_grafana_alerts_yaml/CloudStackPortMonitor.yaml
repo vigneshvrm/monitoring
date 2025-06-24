@@ -1,0 +1,46 @@
+apiVersion: 1
+groups:
+- name: CloudStackPortMonitor
+  folder: cloudstack-Alert
+  interval: 1m
+  rules:
+    - uid: cloudstack-port-monitor
+      title: CloudStack Port Monitor
+      condition: A
+      noDataState: OK
+      execErrState: Error
+      for: 1m
+      data:
+        - refId: A
+          relativeTimeRange:
+            from: 600
+            to: 0
+          datasourceUid: depejsz2drg8we
+          model:
+            expr: probe_success{job="blackbox-port"} == 0
+            intervalMs: 1000
+            maxDataPoints: 43200
+            refId: A
+            range: false
+            legendFormat: __auto
+            instant: true
+            editorMode: code
+      annotations:
+        summary: |
+          🔴 Port Down Detected 
+        # description: |
+        #   The Blackbox probe failed for Job: {{ index .Labels "job" | default "unknown" }}.
+        #   Target: {{ index .Labels "instance" | default (index .Labels "target" | default "unknown") }}
+
+        #   Please investigate the network/service for issues.
+
+        #   Alert Name: {{ .Labels.alertname }}
+        #   Severity: {{ .Labels.severity }}
+        #   Component: {{ .Labels.component }}
+        #   Time: {{ .StartsAt }}
+        #   Query: {{ .GeneratorURL }}
+      labels:
+        alertname: CloudStackPortDown
+        severity: critical
+        component: cloudstack
+        grafana_folder: cloudstack-Alert

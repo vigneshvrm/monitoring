@@ -1,0 +1,59 @@
+apiVersion: 1
+
+groups:
+  - name: Mon
+    folder: Ceph-Alert
+    interval: 1m
+
+    rules:
+      - uid: ceph_mon_down_quorum_test
+        title: CephMonDownQuorumAtRiskTest
+        condition: A
+        noDataState: OK
+        execErrState: Error
+        for: 0s
+
+        data:
+          - refId: A
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: ceph_mon_quorum_status == bool 0
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: A
+
+          - refId: B
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: count(ceph_mon_quorum_status == 1)
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: B
+
+          - refId: C
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: count(ceph_health_detail{name="MON_DOWN"} == 1)
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: C
+
+        annotations:
+          summary: |
+            🔴 Ceph Monitor Quorum Loss Detected
+
+          description: Ceph monitor is out of quorum. Immediate investigation required.
+
+        labels:
+          severity: critical
+          component: ceph
+          grafana_folder: Ceph-Alert 

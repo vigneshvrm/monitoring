@@ -1,0 +1,64 @@
+apiVersion: 1
+groups:
+- name: DaemonCrash
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: denfd0ixius5ce
+    title: CephDaemonCrash
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: ceph_health_detail{name="RECENT_CRASH"} == 1
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 1m
+    keepFiringFor: 5m
+    annotations:
+      description: One or more daemons have crashed recently, and need to be acknowledged.
+        This notification ensures that software crashes do not go unseen. To acknowledge
+        a crash, use the 'ceph crash archive <id>' command.
+      summary: One or more Ceph daemons have crashed, and are pending acknowledgement
+    labels:
+      severity: critical
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

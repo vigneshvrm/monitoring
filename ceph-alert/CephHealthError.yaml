@@ -1,0 +1,63 @@
+apiVersion: 1
+groups:
+- name: cluster health
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: fenfcr723v3swa
+    title: CephHealthError
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: ceph_health_status == 2
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 5m
+    keepFiringFor: 10m
+    annotations:
+      description: The cluster state has been HEALTH_ERROR for more than 5 minutes.
+        Please check 'ceph health detail' for more information.
+      summary: Ceph is in the ERROR state
+    labels:
+      severity: critical
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

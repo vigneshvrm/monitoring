@@ -1,0 +1,68 @@
+apiVersion: 1
+groups:
+- name: MGR
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: eenfjbfj03pj4d
+    title: CephMgrPrometheusModuleInactive
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: up{job="ceph"} == 0
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 1m
+    keepFiringFor: 5m
+    annotations:
+      description: The mgr/prometheus module is unreachable. This could mean that
+        the module has been disabled or the mgr daemon itself is down. Without the
+        mgr/prometheus module metrics and alerts will no longer function. Open a shell
+        to an admin node or toolbox pod and use 'ceph -s' to to determine whether
+        the mgr is active. If the mgr is not active, restart it, otherwise you can
+        determine module status with 'ceph mgr module ls'. If it is not listed as
+        enabled, enable it with 'ceph mgr module enable prometheus'.
+      summary: The mgr/prometheus module is not available
+    labels:
+      severity: critical
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

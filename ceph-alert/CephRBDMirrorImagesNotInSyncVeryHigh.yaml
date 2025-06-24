@@ -1,0 +1,65 @@
+apiVersion: 1
+groups:
+- name: ' rbdmirror'
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: fenfqy7j4uq68e
+    title: CephRBDMirrorImagesNotInSyncVeryHigh
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: count by (ceph_daemon) ((topk by (ceph_daemon, image, namespace, pool)
+          (1, ceph_rbd_mirror_snapshot_image_local_timestamp) - topk by (ceph_daemon,
+          image, namespace, pool) (1, ceph_rbd_mirror_snapshot_image_remote_timestamp))
+          != 0) > (sum by (ceph_daemon) (ceph_rbd_mirror_snapshot_snapshots) * 0.1)
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 1m
+    keepFiringFor: 5m
+    annotations:
+      description: More than 10% of the images have synchronization problems
+      summary: Number of unsynchronized images are very high.
+    labels:
+      severity: critical
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

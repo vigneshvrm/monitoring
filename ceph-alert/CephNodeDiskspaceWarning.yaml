@@ -1,0 +1,40 @@
+apiVersion: 1
+
+groups:
+  - name: disk-space
+    folder: Ceph-Alert
+    interval: 1m
+
+    rules:
+      - uid: ceph_node_diskspace_warn
+        title: CephNodeDiskspaceWarning
+        condition: A
+        noDataState: OK
+        execErrState: Error
+        for: 0s
+
+        data:
+          - refId: A
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: |
+                predict_linear(node_filesystem_free_bytes{device=~"/.*"}[2d], 3600 * 24 * 5)
+                * on (instance) group_left(nodename)
+                node_uname_info < 0
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: A
+
+        annotations:
+          summary: |
+            ⚠️ Host filesystem free space is getting low
+          description: |
+            Mountpoint {{ index .Labels "mountpoint" }} on {{ index .Labels "nodename" }} will be full in less than 5 days based on the 48 hour trailing fill rate.
+
+        labels:
+          severity: warning
+          component: ceph
+          grafana_folder: Ceph-Alert

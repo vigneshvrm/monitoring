@@ -1,0 +1,86 @@
+apiVersion: 1
+
+groups:
+  - name: osd-checks
+    folder: Ceph-Alert
+    interval: 1m
+
+    rules:
+      - uid: ceph_osd_down_high
+        title: CephOSDDownHigh
+        condition: A
+        noDataState: OK
+        execErrState: Error
+        for: 0s
+
+        data:
+          - refId: A
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: |
+                count(ceph_osd_up == 0) / count(ceph_osd_up) * 100 >= 10
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: A
+
+          - refId: B
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: |
+                (1 - sum(ceph_osd_up) / count(ceph_osd_up)) * 100
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: B
+
+          - refId: D
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: count(ceph_osd_up == 0)
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: D
+
+          - refId: E
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: count(ceph_osd_up)
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: E
+
+          - refId: F
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: |
+                (ceph_osd_up * on(ceph_daemon) group_left(hostname) ceph_osd_metadata) == 0
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: F
+
+        annotations:
+          summary: |
+              🔴 OSD Down
+              {{ index .Labels "hostname" }} has {{ .Values.D }} down OSDs.
+
+          description: |
+            10% or more of the cluster’s OSDs are reported down. Immediate intervention is recommended.
+
+        labels:
+          severity: critical
+          component: ceph
+          grafana_folder: Ceph-Alert

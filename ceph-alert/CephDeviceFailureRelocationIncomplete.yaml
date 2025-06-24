@@ -1,0 +1,66 @@
+apiVersion: 1
+groups:
+- name: OSD
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: benfpb5aiuhvka
+    title: CephDeviceFailureRelocationIncomplete
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: ceph_health_detail{name="DEVICE_HEALTH_IN_USE"} == 1
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 1m
+    keepFiringFor: 3m
+    annotations:
+      description: "The device health module has determined that one or more devices\
+        \ will fail soon, but the normal process of relocating the data on the device\
+        \ to other OSDs in the cluster is blocked. \nEnsure that the cluster has available\
+        \ free space. It may be necessary to add capacity to the cluster to allow\
+        \ data from the failing device to successfully migrate, or to enable the balancer"
+      summary: Device failure is predicted, but unable to relocate data
+    labels:
+      severity: warning
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

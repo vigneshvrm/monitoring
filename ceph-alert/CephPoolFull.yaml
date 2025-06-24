@@ -1,0 +1,58 @@
+apiVersion: 1
+
+groups:
+  - name: CephPools
+    folder: Ceph-Alert
+    interval: 1m
+
+    rules:
+      - uid: ceph_pool_full
+        title: CephPoolFull
+        condition: A
+        noDataState: OK
+        execErrState: Error
+        for: 0s
+
+        data:
+          - refId: A
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf  # 🔁 Adjust UID if needed
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: ceph_health_detail{name="POOL_FULL"} > 0
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: A
+
+          - refId: B
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: |
+                topk(5,
+                  sort_desc(
+                    ceph_pool_percent_used
+                    * on(pool_id) group_right()
+                    ceph_pool_metadata
+                  )
+                )
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: B
+
+        annotations:
+          summary: |
+            🔴 Ceph Pool Full Alert
+
+          description: |
+            A Ceph pool has reached full capacity or quota limits.
+            • Check top consumers and free space.
+            • Ensure clients can write once pool is freed.
+
+        labels:
+          severity: critical
+          component: ceph
+          grafana_folder: Ceph-Alert

@@ -1,0 +1,53 @@
+apiVersion: 1
+
+groups:
+  - name: CephPools
+    folder: Ceph-Alert
+    interval: 1m
+
+    rules:
+      - uid: ceph_pool_growth_warn
+        title: CephPoolGrowthWarning
+        condition: A
+        noDataState: OK
+        execErrState: Error
+        for: 0s
+
+        data:
+          - refId: A
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf  # <-- Replace with your actual UID
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: |
+                predict_linear(ceph_pool_percent_used[2d], 3600 * 24 * 5)
+                * on (pool_id, instance) group_right ()
+                ceph_pool_metadata >= 95
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: A
+
+          - refId: B
+            queryType: timeSeriesQuery
+            datasourceUid: aeoesbkofng1sf
+            relativeTimeRange: { from: 600, to: 0 }
+            model:
+              expr: ceph_pool_metadata
+              interval: ""
+              instant: true
+              datasource: { type: prometheus, uid: aeoesbkofng1sf }
+              refId: B
+
+        annotations:
+          summary: |
+            🔶 Pool Near Capacity Detected
+
+          description: |
+            The projected usage of a Ceph pool is expected to exceed 95% in the next 5 days. Monitor and act accordingly.
+
+        labels:
+          severity: warning
+          component: ceph
+          grafana_folder: Ceph-Alert
+

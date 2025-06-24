@@ -1,0 +1,46 @@
+apiVersion: 1
+groups:
+- name: CloudStackUsageService
+  folder: cloudstack-Alert
+  interval: 1m
+  rules:
+    - uid: cloudstack-usage-service
+      title: CloudStack Usage Service Down
+      condition: A
+      noDataState: OK
+      execErrState: Error
+      for: 1m
+      data:
+        - refId: A
+          relativeTimeRange:
+            from: 600
+            to: 0
+          datasourceUid: depejsz2drg8we
+          model:
+            expr: node_systemd_unit_state{name="cloudstack-usage.service", state=~"failed|inactive|deactivating|activating"} == 1
+            intervalMs: 1000
+            maxDataPoints: 43200
+            refId: A
+            instant: true
+            range: false
+            legendFormat: __auto
+            editorMode: code
+      annotations:
+        summary: |
+          🔴 CloudStack Usage Service Down
+        # description: |
+        #   The CloudStack usage service (cloudstack-usage.service) is down for Job: {{ index .Labels "job" | default "unknown" }}.
+        #   State: {{ index .Labels "state" | default "unknown" }}
+
+        #   Immediate attention required!
+
+        #   Alert Name: {{ .Labels.alertname }}
+        #   Severity: {{ .Labels.severity }}
+        #   Component: {{ .Labels.component }}
+        #   Time: {{ .StartsAt }}
+        #   Query: {{ .GeneratorURL }}
+      labels:
+        alertname: CloudStackUsageSvcDown
+        severity: critical
+        component: cloudstack
+        grafana_folder: cloudstack-Alert

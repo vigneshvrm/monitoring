@@ -1,0 +1,66 @@
+apiVersion: 1
+groups:
+- name: OSD
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: aenfozsyle29sd
+    title: CephDeviceFailurePredicted
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: ceph_health_detail{name="DEVICE_HEALTH"} == 1
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 1m
+    keepFiringFor: 3m
+    annotations:
+      description: The device health module has determined that one or more devices
+        will fail soon. To review device status use 'ceph device ls'. To show a specific
+        device use 'ceph device info <dev id>'. Mark the OSD out so that data may
+        migrate to other OSDs. Once the OSD has drained, destroy the OSD, replace
+        the device, and redeploy the OSD.
+      summary: Device(s) predicted to fail soon
+    labels:
+      severity: warning
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

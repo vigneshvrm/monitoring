@@ -1,0 +1,65 @@
+apiVersion: 1
+groups:
+- name: OSD
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: eenfoqvd903r4f
+    title: CephOSDNearFull
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: ceph_health_detail{name="OSD_NEARFULL"} == 1
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 5m
+    keepFiringFor: 6m
+    annotations:
+      description: One or more OSDs have reached the NEARFULL threshold. Use 'ceph
+        health detail' and 'ceph osd df' to identify the problem. To resolve, add
+        capacity to the affected OSD's failure domain, restore down/out OSDs, or delete
+        unwanted data.
+      summary: OSD(s) running low on free space (NEARFULL)
+    labels:
+      severity: warning
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

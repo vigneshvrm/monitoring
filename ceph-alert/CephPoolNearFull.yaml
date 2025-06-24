@@ -1,0 +1,68 @@
+apiVersion: 1
+groups:
+- name: Pools
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: denfq2ukrfx1cd
+    title: CephPoolNearFull
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: ceph_health_detail{name="POOL_NEAR_FULL"} > 0
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 5m
+    keepFiringFor: 10m
+    annotations:
+      description: A pool has exceeded the warning (percent full) threshold, or OSDs
+        supporting the pool have reached the NEARFULL threshold. Writes may continue,
+        but you are at risk of the pool going read-only if more capacity isn't made
+        available. Determine the affected pool with 'ceph df detail', looking at QUOTA
+        BYTES and STORED. Increase the pool's quota, or add capacity to the cluster
+        first then increase the pool's quota (e.g. ceph osd pool set quota <pool_name>
+        max_bytes <bytes>). Also ensure that the balancer is active.
+      summary: One or more Ceph pools are nearly full
+    labels:
+      severity: warning
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

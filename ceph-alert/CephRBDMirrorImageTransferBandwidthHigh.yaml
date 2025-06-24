@@ -1,0 +1,66 @@
+apiVersion: 1
+groups:
+- name: ' rbdmirror'
+  folder: Ceph-Alert
+  interval: 10s
+  rules:
+  - uid: fenfr2wvq13wgc
+    title: CephRBDMirrorImageTransferBandwidthHigh
+    condition: C
+    data:
+    - refId: A
+      relativeTimeRange:
+        from: 600
+        to: 0
+      datasourceUid: aeoesbkofng1sf
+      model:
+        editorMode: code
+        expr: rate(ceph_rbd_mirror_journal_replay_bytes[30m]) > 0.8
+        instant: true
+        intervalMs: 1000
+        legendFormat: __auto
+        maxDataPoints: 43200
+        range: false
+        refId: A
+    - refId: C
+      datasourceUid: __expr__
+      model:
+        conditions:
+        - evaluator:
+            params:
+            - 0
+            type: gt
+          operator:
+            type: and
+          query:
+            params:
+            - C
+          reducer:
+            params: []
+            type: last
+          type: query
+        datasource:
+          type: __expr__
+          uid: __expr__
+        expression: A
+        intervalMs: 1000
+        maxDataPoints: 43200
+        refId: C
+        type: threshold
+    noDataState: OK
+    execErrState: Error
+    for: 1m
+    keepFiringFor: 5m
+    annotations:
+      description: Detected a heavy increase in bandwidth for rbd replications (over
+        80%) in the last 30 min. This might not be a problem, but it is good to review
+        the number of images being replicated simultaneously
+      summary: The replication network usage has been increased over 80% in the last
+        30 minutes. Review the number of images being replicated. This alert will
+        be cleaned automatically after 30 minutes
+    labels:
+      severity: warning
+      storage: ceph
+    isPaused: false
+    notification_settings:
+      receiver: grafana-default-email
