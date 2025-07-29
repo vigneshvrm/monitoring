@@ -1,0 +1,36 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: KVMLibvirtService
+      folder: server-monitor
+      interval: 1m
+      rules:
+        - uid: kvm-libvirt-down
+          title: KVM Libvirt Service Down
+          condition: A
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: node_systemd_unit_state{name="libvirtd.service", state="failed"} == 1
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: "\U0001F534 KVM Libvirt Service Down"
+          labels:
+            alertname: KVMlibvirtDown
+            component: kvm
+            grafana_folder: server-monitor
+            severity: critical
+          isPaused: false

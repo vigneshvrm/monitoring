@@ -1,0 +1,36 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: CloudStackAgentService
+      folder: server-monitor
+      interval: 1m
+      rules:
+        - uid: cloudstack-agent-down
+          title: CloudStack Agent Service Down
+          condition: A
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: node_systemd_unit_state{name="cloudstack-agent.service", state="failed"} == 1
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: "\U0001F534 CloudStack Agent Service Down"
+          labels:
+            alertname: CloudStackAgentDown
+            component: kvm
+            grafana_folder: server-monitor
+            severity: critical
+          isPaused: false

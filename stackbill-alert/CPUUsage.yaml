@@ -1,0 +1,35 @@
+apiVersion: 1
+
+groups:
+  - name: CPUUsage
+    folder: stackbill-Alert
+    interval: 1m
+    rules:
+      - uid: cpuusage-high
+        title: CPU Usage High
+        condition: A
+        noDataState: Ok
+        execErrState: Error
+        for: 2m # Must be above threshold for 2 minutes
+        data:
+          - refId: A
+            queryType: timeSeriesQuery
+            datasourceUid: cervux20smhvke
+            relativeTimeRange: { from: 120, to: 0 }
+            model:
+              expr: |
+                sum by (instance)(system_cpu_usage) * 100 > 90
+              instant: true
+              interval: ""
+              # datasource: { type: prometheus, uid: cervux20smhvke }
+              refId: A
+        annotations:
+          # summary: |
+          #   {{ template "CPUUsageHigh" . }}
+          description: |
+            CPU usage above 90% for the past 2 minutes. Possible symptoms: java.net.SocketTimeoutException.
+        labels:
+          alertname: CPUUsageHigh
+          severity: critical
+          component: java
+          grafana_folder: stackbill-Alert

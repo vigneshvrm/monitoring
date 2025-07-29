@@ -1,0 +1,39 @@
+apiVersion: 1
+
+groups:
+  - name: DiskUsage
+    folder: stackbill-Alert
+    interval: 1m
+    rules:
+      - uid: disk-usage-high
+        title: Disk Usage High
+        condition: A
+        noDataState: OK
+        execErrState: Error
+        for: 2m
+        data:
+          - refId: A
+            queryType: timeSeriesQuery
+            datasourceUid: cervux20smhvke
+            relativeTimeRange: { from: 120, to: 0 }
+            model:
+              expr: |
+                avg by (job, mountpoint) (
+                  (node_filesystem_size_bytes{fstype=~"xfs|ext4"}
+                    - node_filesystem_avail_bytes{fstype=~"xfs|ext4"})
+                  / node_filesystem_size_bytes{fstype=~"xfs|ext4"}
+                  * 100
+                )>85
+              instant: true
+              interval: ""
+              refId: A
+        annotations:
+          # summary: |
+          #   {{ template "DiskUsageHigh" . }}
+          description: |
+            Disk usage is above 85% for the past 2 minutes.
+        labels:
+          alertname: DiskUsageHigh
+          severity: critical
+          component: linux
+          grafana_folder: stackbill-Alert
