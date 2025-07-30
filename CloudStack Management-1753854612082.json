@@ -193,7 +193,7 @@
           "useBackend": false
         }
       ],
-      "title": "Host status",
+      "title": "Hypervisor status",
       "type": "stat"
     },
     {
@@ -474,7 +474,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (zone) (cloudstack_host_memory_usage_mibs_total{filter=\"used\"})\r\n",
+          "expr": "max by (zone)(cloudstack_host_memory_usage_mibs_total{filter=\"used\"})\r\n",
           "format": "table",
           "hide": true,
           "instant": true,
@@ -555,7 +555,7 @@
           "type": "math"
         }
       ],
-      "title": "Overview Used / Allocated",
+      "title": "Zone-Wise Capacity Analysis Used / Allocated",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -854,7 +854,7 @@
           "type": "math"
         }
       ],
-      "title": "CPU Used / Allocated",
+      "title": "🔧 CPU Usage by Zone (Used vs Allocated)",
       "transparent": true,
       "type": "gauge"
     },
@@ -955,7 +955,7 @@
           "type": "math"
         }
       ],
-      "title": "RAM Used / Allocated",
+      "title": "🧠 RAM Utilization by Zone (Used vs Allocated)",
       "transparent": true,
       "type": "gauge"
     },
@@ -1024,7 +1024,7 @@
           "useBackend": false
         }
       ],
-      "title": "Instances Running",
+      "title": "🖥️ Active Instances by Zone",
       "type": "stat"
     },
     {
@@ -1103,7 +1103,7 @@
           "useBackend": false
         }
       ],
-      "title": "Instances  state",
+      "title": "📊 Instance State Distribution",
       "type": "piechart"
     },
     {
@@ -1245,7 +1245,7 @@
           "useBackend": false
         }
       ],
-      "title": "Network",
+      "title": "🌐 Network Resource Allocation Overview",
       "type": "gauge"
     },
     {
@@ -1441,7 +1441,7 @@
           "refId": "B"
         }
       ],
-      "title": "Domains",
+      "title": "🏷️ Domain Resource Consumption",
       "transformations": [
         {
           "id": "joinByField",
@@ -1514,6 +1514,25 @@
         "refresh": 1,
         "regex": "",
         "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_ALL-IN-ONE}"
+        },
+        "definition": "label_values(zone)",
+        "description": "",
+        "name": "zone",
+        "options": [],
+        "query": {
+          "qryType": 5,
+          "query": "label_values(zone)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -1525,6 +1544,6 @@
   "timezone": "browser",
   "title": "CloudStack Management",
   "uid": "6e7c9e6b-fa50-4a88-b8a0-5b4983727092",
-  "version": 16,
+  "version": 34,
   "weekStart": ""
 }

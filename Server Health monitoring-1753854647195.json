@@ -548,7 +548,7 @@
             "uid": "${DS_ALL-IN-ONE}"
           },
           "editorMode": "code",
-          "expr": "avg by (job, mountpoint)(\r\n  (\r\n    node_filesystem_size_bytes{fstype=~\"xfs|ext4\",job=\"$job\"}\r\n    - node_filesystem_free_bytes{fstype=~\"xfs|ext4\",job=\"$job\"}\r\n  ) / node_filesystem_size_bytes{fstype=~\"xfs|ext4\",job=\"$job\"} * 100\r\n)\r\n",
+          "expr": "avg by (job, mountpoint)(\r\n  (\r\n    node_filesystem_size_bytes{fstype=~\"xfs|ext4\",job=\"$job\"}\r\n    - node_filesystem_avail_bytes{fstype=~\"xfs|ext4\",job=\"$job\"}\r\n  ) / node_filesystem_size_bytes{fstype=~\"xfs|ext4\",job=\"$job\"} * 100\r\n)\r\n",
           "interval": "",
           "legendFormat": "{{job}} ({{mountpoint}})",
           "range": true,
@@ -788,6 +788,6 @@
   "timezone": "",
   "title": "Server Health monitoring",
   "uid": "cwm3B_1Ma",
-  "version": 27,
+  "version": 28,
   "weekStart": ""
 }
