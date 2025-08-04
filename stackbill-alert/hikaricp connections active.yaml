@@ -32,7 +32,7 @@ groups:
                 conditions:
                     - evaluator:
                         params:
-                            - 18
+                            - 20
                         type: gt
                       operator:
                         type: and
@@ -54,8 +54,7 @@ groups:
           noDataState: OK
           execErrState: Error
           for: 2m
-          annotations:
-            Hikaricp Connections Active: "instance {{  index .Labels \"instance\"}} \njob {{ \\index .Labels \"job\" }}\npool {{ \\index .Labels \"pool\" }}\ndescription `HikariCP active connections alert for {{ index .Labels \"instance\"}}`"
+          annotations: {}
           labels:
             alertname: hikaricp_connections_active
             component: java
