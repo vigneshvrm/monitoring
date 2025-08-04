@@ -1,0 +1,715 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: SbQueueEvent
+      folder: Rabbitmq
+      interval: 30s
+      rules:
+        - uid: eepw44g2u84qod
+          title: SbQueueEvent
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="SbQueueEvent", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 22
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m30s
+          annotations:
+            description: SbQueueEvent is Reached its Threshold - Coloasia
+            summary: SbQueueEvent is Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: fepw49bk7xerke
+          title: SbWebsocketEvent
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="SbWebsocketEvent", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m30s
+          annotations:
+            description: SbWebsocketEvent is Reached its Threshold - Coloasia
+            summary: SbWebsocketEvent is Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: bepw4evy86l1cd
+          title: WolfCmpResources
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="WolfCmpResources", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m30s
+          annotations:
+            description: WolfCmpResources is Reached its Threshold - Coloasia
+            summary: WolfCmpResources is Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: eepw4lt0581s0a
+          title: WolfCoreServiceCommunicationEvent
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="WolfCoreServiceCommunicationEvent", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            description: WolfCoreServiceCommunicationEvent Ready Queue > 20
+            summary: WolfCoreServiceCommunicationEvent is Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: aepwcsx1a718ga
+          title: WolfActionEvent
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="WolfActionEvent", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            description: WolfActionEvent Ready Queue > 20
+            summary: WolfActionEvent is Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: cepwcxd4wwnpca
+          title: WolfAlertEvent
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="WolfAlertEvent", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            description: WolfAlertEvent Ready Queue > 20
+            summary: WolfAlertEvent Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: depwd1vvs8wsga
+          title: WolfAsynchEvent
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="WolfAsynchEvent", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            description: WolfAsynchEvent Ready Queue > 20
+            summary: WolfAsynchEvent Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: fepwd5mtu9qf4f
+          title: WolfResourceEvent
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="WolfResourceEvent", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            description: WolfResourceEvent Ready Queue > 20
+            summary: WolfResourceEvent Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: bepwd9mj3hatce
+          title: WolfUsageEvent
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="WolfUsageEvent", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            description: WolfUsageEvent Ready Queue > 20
+            summary: WolfUsageEvent Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: fepwdjvl9wl4wb
+          title: WolfEmailTemplate
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="WolfEmailTemplate", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            description: WolfEmailTemplate Ready Queue > 20
+            summary: WolfEmailTemplate Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: fepwdnunx18u8a
+          title: sb_sw_alert_queue
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="sb_sw_alert_queue", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            description: sb_sw_alert_queue Ready Queue > 20
+            summary: sb_sw_alert_queue Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: aepwdremga51cf
+          title: sb_sw_queue
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: fesa22tnbauioa
+              model:
+                datasource:
+                    type: prometheus
+                    uid: fesa22tnbauioa
+                disableTextWrap: false
+                editorMode: builder
+                expr: rabbitmq_queue_messages_ready{queue="sb_sw_queue", vhost="/"}
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+                useBackend: false
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            description: sb_sw_queue Ready Queue > 20
+            summary: sb_sw_queue Reached its Threshold - Coloasia
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email

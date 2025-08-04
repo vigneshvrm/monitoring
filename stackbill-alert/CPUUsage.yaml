@@ -2,7 +2,7 @@ apiVersion: 1
 
 groups:
   - name: CPUUsage
-    folder: stackbill-Alert
+    folder: server-monitor
     interval: 1m
     rules:
       - uid: cpuusage-high
@@ -14,7 +14,7 @@ groups:
         data:
           - refId: A
             queryType: timeSeriesQuery
-            datasourceUid: cervux20smhvke
+            datasourceUid: depejsz2drg8we
             relativeTimeRange: { from: 120, to: 0 }
             model:
               expr: |

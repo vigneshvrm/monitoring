@@ -2,7 +2,7 @@ apiVersion: 1
 
 groups:
   - name: RamUsage
-    folder: stackbill-Alert
+    folder: server-monitor
     interval: 1m
     rules:
       - uid: ram-usage-high
