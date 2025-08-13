@@ -7,12 +7,6 @@ podman create \
   -p 9116:9116 \
   localhost/cloudstack-exporter:latest
 
-# generate systemd unit for this container
-podman generate systemd \
-  --name cloudstack-exporter \
-  --files \
-  --new \
-  --restart-policy=always
 
 # generate systemd unit for this container
 podman generate systemd \
