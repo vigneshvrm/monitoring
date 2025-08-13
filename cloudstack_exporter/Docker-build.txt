@@ -1,0 +1,32 @@
+# build (tags locally as cloudstack-exporter:latest)
+podman build -t cloudstack-exporter:latest .
+
+# create the container
+podman create \
+  --name cloudstack-exporter \
+  -p 9116:9116 \
+  localhost/cloudstack-exporter:latest
+
+# generate systemd unit for this container
+podman generate systemd \
+  --name cloudstack-exporter \
+  --files \
+  --new \
+  --restart-policy=always
+
+# generate systemd unit for this container
+podman generate systemd \
+  --name cloudstack-exporter \
+  --files \
+  --new \
+  --restart-policy=always
+
+# as root: place unit under system-wide systemd
+mv container-cloudstack-exporter.service /etc/systemd/system/
+
+# reload units, enable at boot, and start now
+systemctl daemon-reload
+systemctl enable --now container-cloudstack-exporter.service
+
+# verify
+systemctl status container-cloudstack-exporter.service
