@@ -14,7 +14,7 @@ groups:
         data:
           - refId: A
             queryType: timeSeriesQuery
-            datasourceUid: cervux20smhvke
+            datasourceUid: depejsz2drg8we
             relativeTimeRange: { from: 120, to: 0 }
             model:
               expr: |
