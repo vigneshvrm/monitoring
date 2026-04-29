@@ -61,5 +61,3 @@ groups:
             grafana_folder: stackbill-Alert
             severity: Warning
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email

@@ -56,8 +56,6 @@ groups:
           labels:
             severity: critical
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email
         - uid: cf3vie14oog74c
           title: Replication I/O Thread
           condition: C
@@ -109,8 +107,6 @@ groups:
           labels:
             severity: critical
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email
         - uid: af3vijw2gzv28e
           title: MySQL Slave SQL Thread
           condition: C
@@ -162,8 +158,6 @@ groups:
           labels:
             severity: critical
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email
         - uid: af3viw8fypgxsf
           title: MySQL Slave Lag
           condition: C
@@ -215,8 +209,6 @@ groups:
           labels:
             severity: critical
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email
         - uid: af3vjhsljecxsc
           title: MySQL I/O Performance
           condition: C
@@ -268,8 +260,6 @@ groups:
           labels:
             severity: Warning
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email
         - uid: df3vuyem7cao0e
           title: MongoDB Service Status
           condition: C
@@ -321,8 +311,6 @@ groups:
           labels:
             severity: critical
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email
         - uid: ef3w635kz8268f
           title: MongoDB Replication Lag
           condition: C
@@ -372,8 +360,6 @@ groups:
           annotations:
             summary: Replication lag >10s on {{ index .Labels "instance" }}
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email
         - uid: df3w69ywbqgaoe
           title: MongoDB Role Changed
           condition: C
@@ -423,8 +409,6 @@ groups:
           annotations:
             summary: Node is not PRIMARY on {{ index .Labels "instance" }}
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email
         - uid: ef3w7k5cxf9q8e
           title: MongoDB High Connection Usage
           condition: C
@@ -476,5 +460,3 @@ groups:
           labels:
             severity: critical
           isPaused: false
-          notification_settings:
-            receiver: grafana-default-email
