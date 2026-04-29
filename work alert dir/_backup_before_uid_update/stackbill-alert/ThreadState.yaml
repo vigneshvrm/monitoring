@@ -1,0 +1,36 @@
+apiVersion: 1
+
+groups:
+  - name: ThreadState
+    folder: stackbill-Alert
+    interval: 1m
+    rules:
+      - uid: blocked-threads-high
+        title: JVM Blocked Threads High
+        condition: A
+        noDataState: Ok
+        execErrState: Error
+        for: 2m
+        data:
+          - refId: A
+            queryType: timeSeriesQuery
+            datasourceUid: cervux20smhvke
+            relativeTimeRange: { from: 120, to: 0 }
+            model:
+              expr: |
+                sum by (instance)(jvm_threads_states_threads{state="blocked"}) > 2
+              instant: true
+              interval: ""
+              # datasource: { type: prometheus, uid: cervux20smhvke }
+              refId: A
+        annotations:
+          # summary: |
+          #   {{ template "JVMThreadsBlockedHigh" . }}
+          description: |
+            JVM has more than 2 blocked threads for the past 2 minutes.
+            Logs: Thread dump will show multiple threads waiting for a lock.
+        labels:
+          alertname: JVMThreadsBlockedHigh
+          severity: critical
+          component: java
+          grafana_folder: stackbill-Alert

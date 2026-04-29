@@ -1,0 +1,39 @@
+apiVersion: 1
+
+groups:
+  - name: GCPressure
+    folder: stackbill-Alert
+    interval: 1m
+    rules:
+      - uid: gc-pressure-high
+        title: GC Pressure High
+        condition: A
+        noDataState: OK
+        execErrState: Error
+        for: 2m
+        data:
+          - refId: A
+            queryType: timeSeriesQuery
+            datasourceUid: cervux20smhvke
+            relativeTimeRange: { from: 300, to: 0 }
+            model:
+              expr: |
+                (
+                  sum by (instance) (rate(jvm_gc_pause_seconds_sum[5m]))
+                  /
+                  (sum by (instance) (rate(process_cpu_time_ns_total[5m])) / 1e9)
+                ) * 100 > 25
+              instant: true
+              interval: ""
+              refId: A
+        annotations:
+          # summary: |
+          #   {{ template "GCPressureHigh" . }}
+          description: |
+            GC time exceeds 25% of process CPU time over 5 minutes for at least 2 minutes.
+            Possible symptom: java.lang.OutOfMemoryError: GC overhead limit exceeded.
+        labels:
+          alertname: GCPressureHigh
+          severity: critical
+          component: java
+          grafana_folder: stackbill-Alert

@@ -1,0 +1,269 @@
+{{ define "SlackCephMonitorDown" }}
+:warning: *Ceph Monitor Alert*
+• *Monitor:* `{{ index .Labels "ceph_daemon" | default "unknown" }}`
+• *Down Monitors:* `{{ printf "%.0f" (index .Values "A") }}`
+• *Quorum Limit:* `{{ printf "%.0f" (index .Values "C") }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCephQuorumLoss" }}
+:no_entry: *Ceph Monitor Quorum Loss*
+• *Monitor:* `{{ index .Labels "ceph_daemon" | default "unknown" }}`
+• *Quorum Size:* `{{ printf "%.0f" (index .Values "B") }}`
+• *MON_DOWN:* `{{ printf "%.0f" (index .Values "C") }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCephNodeRootFilesystemFull" }}
+:rotating_light: *Root Volume Almost Full*
+• *Host:* `{{ index .Labels "instance" | default "unknown" }}`
+• *Used:* `{{ printf "%.2f" (index .Values "B") }}%`
+• *Free:* `{{ printf "%.2f" (index .Values "A") }}%`
+• *Mountpoint:* `{{ index .Labels "mountpoint" | default "unknown" }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCephNodeDiskspaceWarning" }}
+:warning: *Ceph Disk Forecast Warning*
+• *Host:* `{{ index .Labels "nodename" | default "unknown" }}`
+• *Mountpoint:* `{{ index .Labels "mountpoint" | default "unknown" }}`
+• Disk is forecasted to be full within 5 days.
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCephOSDDownHigh" }}
+:red_circle: *Too Many OSDs Down*
+• *Host:* `{{ index .Labels "hostname" | default "unknown" }}`
+• *Down OSDs:* `{{ printf "%.0f" (index .Values "D") }} / {{ printf "%.0f" (index .Values "E") }}`
+• *Percent Down:* `{{ printf "%.1f" (index .Values "B") }}%`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCephPoolGrowthWarning" }}
+:large_orange_diamond: *Ceph Pool Near Capacity*
+• *Pool:* `{{ index .Labels "pool_name" | default "unknown" }}`
+• *Projected Usage:* `{{ printf "%.2f" (index .Values "A") }}%`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCephPoolFull" }}
+:red_circle: *Ceph Pool Blocked*
+• *Pool:* `{{ index .Labels "pool_name" | default "unknown" }}`
+• *Usage:* `{{ printf "%.1f" (index .Values "B") }}%`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+• Action required: increase quota or add OSDs.
+{{ end }}
+
+{{ define "SlackCloudStackHostOffline" }}
+:rotating_light: *CloudStack Host Offline*
+• *Host IP:* `{{ index .Labels "ip" | default "unknown" }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCloudStackPortDown" }}
+:red_circle: *CloudStack Port Monitor Failed*
+• *Instance:* `{{ index .Labels "instance" | default "unknown" }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCloudStackAPIFailure" }}
+:x: *CloudStack API Server Failure*
+• API status check failed.
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCloudStackMgmtSvcDown" }}
+:warning: *CloudStack Management Service Down*
+• *Host:* `{{ index .Labels "instance" | default "unknown" }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCloudStackUsageSvcDown" }}
+:warning: *CloudStack Usage Service Down*
+• *Host:* `{{ index .Labels "instance" | default "unknown" }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCloudStackAgentDown" }}
+:red_circle: *CloudStack Agent Service Failed*
+• *Host:* `{{ index .Labels "instance" | default "unknown" }}`
+• *Job:* `{{ index .Labels "job" | default "unknown" }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackKVMlibvirtDown" }}
+:warning: *KVM Libvirt Service Failed*
+• *Host:* `{{ index .Labels "instance" | default "unknown" }}`
+• *Job:* `{{ index .Labels "job" | default "unknown" }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackHeapUsedHigh" }}
+:rotating_light: *Java Heap Usage Critical*
+• *Host:* `{{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}`
+• *Heap Used:* `{{ printf "%.2f" (index .Values "A") }}%`
+• Threshold: 90% for past {{ .Rule.For }}.
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackCPUUsageHigh" }}
+:fire: *Java CPU Usage Critical*
+• *Host:* `{{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}`
+• *CPU Used:* `{{ printf "%.2f" (index .Values "A") }}%`
+• Threshold: 90% for past 2 minutes.
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackJVMThreadsBlockedHigh" }}
+:rotating_light: *JVM Blocked Threads Alert*
+• *Host:* `{{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}`
+• *Blocked Threads:* `{{ printf "%.0f" (index .Values "A") }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+• Action recommended: inspect thread dump for lock contention.
+{{ end }}
+
+{{ define "SlackGCPressureHigh" }}
+:rotating_light: *JVM GC Pressure Alert*
+• *Host:* `{{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}`
+• *GC Time:* `{{ printf "%.2f" (index .Values "A") }}%`
+• Threshold: 25% of process time (last 5m).
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackDiskUsageHigh" }}
+:rotating_light: *Disk Usage Alert*
+• *Host/Job:* `{{ index .Labels "job" | default "unknown" }}`
+• *Mountpoint:* `{{ index .Labels "mountpoint" | default "unknown" }}`
+• *Disk Used:* `{{ printf "%.2f" (index .Values "A") }}%`
+• Threshold: 85% for past 2 minutes.
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackRamUsageHigh" }}
+:rotating_light: *RAM Usage Alert*
+• *Host/Job:* `{{ index .Labels "job" | default "unknown" }}`
+• *RAM Used:* `{{ printf "%.2f" (index .Values "A") }}%`
+• Threshold: 90% for past 2 minutes.
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackHikaricp Active connections" }}
+:rotating_light: *HikariCP Active Connections High*
+• *Host:* `{{ index .Labels "instance" | default "unknown" }}`
+• *Job:* `{{ index .Labels "job" | default "unknown" }}`
+• Condition: Active connections > 20 for past 2 minutes.
+• *Started:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackSSLExpirySoon" }}
+:bell: *SSL Certificate Expiry Soon*
+• *Host/Instance:* `{{ index .Labels "instance" | default "unknown" }}`
+• *Time Left:* {{ humanizeDuration (sub (index .Values "A") (now)) }}
+• *Expiry Date:* `{{ (index .Annotations "expiry") | default "unknown" }}`
+• *Alert Time:* `{{ printf "%s" .StartsAt }}`
+{{ end }}
+
+{{ define "SlackRabbitMQQueueFiring" }}
+{{- $queue := (index .Labels "queue") | default (index .Annotations "queue") | default (index .Labels "alertname") | default "unknown" -}}
+{{- $threshold := (index .Annotations "threshold") | default "unknown" -}}
+:rotating_light: *RabbitMQ Queue Alert*
+• *Queue:* `{{ $queue }}`
+• *Threshold:* `{{ $threshold }}`
+• *Current Count:* {{ with index .Values "A" }}`{{ printf "%.0f" . }}`{{ else }}`unknown`{{ end }}
+• *Started:* `{{ printf "%s" .StartsAt }}`
+• *Status:* Firing
+{{ end }}
+
+{{ define "SlackRabbitMQQueueResolved" }}
+{{- $queue := (index .Labels "queue") | default (index .Annotations "queue") | default (index .Labels "alertname") | default "unknown" -}}
+{{- $threshold := (index .Annotations "threshold") | default "unknown" -}}
+:white_check_mark: *RabbitMQ Queue Recovered*
+• *Queue:* `{{ $queue }}`
+• *Threshold:* `{{ $threshold }}`
+• *Current Count:* {{ with index .Values "A" }}`{{ printf "%.0f" . }}`{{ else }}`unknown`{{ end }}
+• *Started:* `{{ printf "%s" .StartsAt }}`
+• *Ended:* `{{ printf "%s" .EndsAt }}`
+{{ end }}
+
+{{ define "SlackGenericFiring" }}
+:rotating_light: *{{ index .Labels "alertname" | default "Alert" }}*
+• *Instance:* `{{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+• *Status:* Firing
+{{ end }}
+
+{{ define "SlackGenericResolved" }}
+:white_check_mark: *{{ index .Labels "alertname" | default "Alert" }} Resolved*
+• *Instance:* `{{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}`
+• *Started:* `{{ printf "%s" .StartsAt }}`
+• *Ended:* `{{ printf "%s" .EndsAt }}`
+{{ end }}
+
+{{ define "default.message" }}
+{{ if gt (len .Alerts.Firing) 0 }}*🔥 Active Alerts*{{ end }}
+{{ range .Alerts.Firing }}
+{{- $name := .Labels.alertname }}
+{{ if or (eq $name "SbQueueEvent") (eq $name "SbWebsocketEvent") (eq $name "WolfCmpResources") (eq $name "WolfCoreServiceCommunicationEvent") (eq $name "WolfActionEvent") (eq $name "WolfAlertEvent") (eq $name "WolfAsynchEvent") (eq $name "WolfResourceEvent") (eq $name "WolfUsageEvent") (eq $name "WolfEmailTemplate") (eq $name "sb_sw_alert_queue") (eq $name "sb_sw_queue") }}
+{{ template "SlackRabbitMQQueueFiring" . }}
+{{ else if eq $name "CephMonDown" }}
+{{ template "SlackCephMonitorDown" . }}
+{{ else if eq $name "CephMonDownQuorumAtRiskTest" }}
+{{ template "SlackCephQuorumLoss" . }}
+{{ else if eq $name "CephNodeRootFilesystemFull" }}
+{{ template "SlackCephNodeRootFilesystemFull" . }}
+{{ else if eq $name "CephNodeDiskspaceWarning" }}
+{{ template "SlackCephNodeDiskspaceWarning" . }}
+{{ else if eq $name "CephOSDDownHigh" }}
+{{ template "SlackCephOSDDownHigh" . }}
+{{ else if eq $name "CephPoolGrowthWarning" }}
+{{ template "SlackCephPoolGrowthWarning" . }}
+{{ else if eq $name "CephPoolFull" }}
+{{ template "SlackCephPoolFull" . }}
+{{ else if eq $name "CloudStackHostOffline" }}
+{{ template "SlackCloudStackHostOffline" . }}
+{{ else if eq $name "CloudStackPortDown" }}
+{{ template "SlackCloudStackPortDown" . }}
+{{ else if eq $name "CloudStackAPIFailure" }}
+{{ template "SlackCloudStackAPIFailure" . }}
+{{ else if eq $name "CloudStackMgmtSvcDown" }}
+{{ template "SlackCloudStackMgmtSvcDown" . }}
+{{ else if eq $name "CloudStackUsageSvcDown" }}
+{{ template "SlackCloudStackUsageSvcDown" . }}
+{{ else if eq $name "CloudStackAgentDown" }}
+{{ template "SlackCloudStackAgentDown" . }}
+{{ else if eq $name "KVMlibvirtDown" }}
+{{ template "SlackKVMlibvirtDown" . }}
+{{ else if eq $name "HeapUsedHigh" }}
+{{ template "SlackHeapUsedHigh" . }}
+{{ else if eq $name "CPUUsageHigh" }}
+{{ template "SlackCPUUsageHigh" . }}
+{{ else if eq $name "JVMThreadsBlockedHigh" }}
+{{ template "SlackJVMThreadsBlockedHigh" . }}
+{{ else if eq $name "GCPressureHigh" }}
+{{ template "SlackGCPressureHigh" . }}
+{{ else if eq $name "DiskUsageHigh" }}
+{{ template "SlackDiskUsageHigh" . }}
+{{ else if eq $name "RamUsageHigh" }}
+{{ template "SlackRamUsageHigh" . }}
+{{ else if eq $name "SSLExpirySoon" }}
+{{ template "SlackSSLExpirySoon" . }}
+{{ else if eq $name "Hikaricp Active connections" }}
+{{ template "SlackHikaricp Active connections" . }}
+{{ else }}
+{{ template "SlackGenericFiring" . }}
+{{ end }}
+
+{{ end }}
+
+{{ if gt (len .Alerts.Resolved) 0 }}*✅ Resolved Alerts*{{ end }}
+{{ range .Alerts.Resolved }}
+{{- $name := .Labels.alertname }}
+{{ if or (eq $name "SbQueueEvent") (eq $name "SbWebsocketEvent") (eq $name "WolfCmpResources") (eq $name "WolfCoreServiceCommunicationEvent") (eq $name "WolfActionEvent") (eq $name "WolfAlertEvent") (eq $name "WolfAsynchEvent") (eq $name "WolfResourceEvent") (eq $name "WolfUsageEvent") (eq $name "WolfEmailTemplate") (eq $name "sb_sw_alert_queue") (eq $name "sb_sw_queue") }}
+{{ template "SlackRabbitMQQueueResolved" . }}
+{{ else }}
+{{ template "SlackGenericResolved" . }}
+{{ end }}
+
+{{ end }}
+{{ end }}
+

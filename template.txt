@@ -1,0 +1,246 @@
+{{ define "CephMonitorDown" }}
+⚠️ Ceph Monitor Alert
+
+• Monitor: {{ index .Labels "ceph_daemon" }}
+• Down Monitors: {{ printf "%.0f" (index .Values "A") }}
+• Quorum Limit: {{ printf "%.0f" (index .Values "C") }}
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CephQuorumLoss" }}
+📛 Ceph Monitor Quorum Loss Detected
+
+• Monitor: {{ index .Labels "ceph_daemon" }}
+• Quorum Size: {{ printf "%.0f" (index .Values "B") }}
+• MON_DOWN Count: {{ printf "%.0f" (index .Values "C") }}
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CephNodeRootFilesystemFull" }}
+🚨 Root Volume Almost Full
+
+• Host: {{ index .Labels "instance" }}
+• Used: {{ printf "%.2f" (index .Values "B") }}%
+• Free: {{ printf "%.2f" (index .Values "A") }}%
+• Mountpoint: {{ index .Labels "mountpoint" }}
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CephNodeDiskspaceWarning" }}
+⚠️ Ceph Disk Forecast Warning
+
+• Host: {{ index .Labels "nodename" }}
+• Mountpoint: {{ index .Labels "mountpoint" }}
+• Disk is forecasted to be full within 5 days
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CephOSDDownHigh" }}
+🔴 Too Many OSDs Down
+
+• Host: {{ index .Labels "hostname" }}
+• Down OSDs: {{ printf "%.0f" (index .Values "D") }} / {{ printf "%.0f" (index .Values "E") }}
+• % Down: {{ printf "%.1f" (index .Values "B") }}%
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CephPoolGrowthWarning" }}
+🔶 Pool Near Capacity
+
+• Pool: {{ index .Labels "pool_name" | default "unknown" }}
+• Projected Usage: {{ printf "%.2f" (index .Values "A") }}%
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CephPoolFull" }}
+🔴 Pool Blocked (Full or Quota Reached)
+
+• Pool: {{ index .Labels "pool_name" | default "unknown" }}
+• Usage: {{ printf "%.1f" (index .Values "B") }}%
+• Time: {{ printf "%s" .StartsAt }}
+
+👉 Increase quota or add OSDs before retrying writes.
+{{ end }}
+
+{{ define "CloudStackHostOffline" }}
+🚨 CloudStack Host Offline
+• Host IP(s): {{ index .Labels "ip" | default "unknown" }}
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CloudStackPortDown" }}
+🔴 CloudStack Port Monitor Failed
+• Instance: {{ index .Labels "instance" | default "unknown" }}
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CloudStackAPIFailure" }}
+❌ CloudStack API Server Failure
+• API status check failed!
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CloudStackMgmtSvcDown" }}
+⚠️ CloudStack Management Service Down
+• Host: {{ index .Labels "instance" | default "unknown" }}
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CloudStackUsageSvcDown" }}
+⚠️ CloudStack Usage Service Down
+• Host: {{ index .Labels "instance" | default "unknown" }}
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "CloudStackAgentDown" }}
+🔴 CloudStack Agent Service Failed
+• Host: {{ index .Labels.instance | default "unknown" }}
+• Job: {{ index .Labels.job | default "unknown" }}
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "KVMlibvirtDown" }}
+⚠️ KVM Libvirt Service Failed
+• Host: {{ index .Labels.instance | default "unknown" }}
+• Job: {{ index .Labels.job | default "unknown" }}
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "HeapUsedHigh" }}
+🚨 **Java Heap Usage Critical**
+• Host: {{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}
+• Heap Used: {{ printf "%.2f" (index .Values "A") }}%
+• Threshold: 90%
+• Condition: Heap usage above 90% for past {{ .Rule.For }}
+• Time: {{ printf "%s" .StartsAt }}
+• Possible error: `java.lang.OutOfMemoryError: Java heap space`
+{{ end }}
+
+{{ define "CPUUsageHigh" }}
+🔥 **Java CPU Usage Critical**
+• Host: {{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}
+• CPU Used: {{ printf "%.2f" (index .Values "A") }}%
+• Threshold: 90%
+• Condition: CPU usage above 90% for past 2 minutes
+• Time: {{ printf "%s" .StartsAt }}
+• Possible symptom: `java.net.SocketTimeoutException`
+{{ end }}
+
+{{ define "JVMThreadsBlockedHigh" }}
+🚨 **JVM Blocked Threads Alert**
+• Host: {{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}
+• Blocked Threads: {{ printf "%.0f" (index .Values "A") }}
+• Condition: Blocked threads > 2 for past 2 minutes
+• Time: {{ printf "%s" .StartsAt }}
+• Check thread dump for threads waiting on locks!
+{{ end }}
+
+{{ define "GCPressureHigh" }}
+🚨 **JVM GC Pressure Alert**
+• Host: {{ index .Labels "instance" | default (index .Labels "hostname" | default "unknown") }}
+• GC Time: {{ printf "%.2f" (index .Values "A") }}%
+• Threshold: 25% of process time (last 5m)
+• Condition: GC pressure high for past 2 minutes
+• Time: {{ printf "%s" .StartsAt }}
+• Possible symptom: `java.lang.OutOfMemoryError: GC overhead limit exceeded`
+{{ end }}
+
+{{ define "DiskUsageHigh" }}
+🚨 **Disk Usage Alert**
+• Host/Job: {{ index .Labels "job" | default "unknown" }}
+• Mountpoint: {{ index .Labels "mountpoint" | default "unknown" }}
+• Disk Used: {{ printf "%.2f" (index .Values "A") }}%
+• Threshold: 85%
+• Condition: Disk usage above 85% for past 2 minutes
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "RamUsageHigh" }}
+🚨 **RAM Usage Alert**
+• Host/Job: {{ index .Labels "job" | default "unknown" }}
+• RAM Used: {{ printf "%.2f" (index .Values "A") }}%
+• Threshold: 90%
+• Condition: RAM usage above 90% for past 2 minutes
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "Hikaricp Active connections" }}
+🚨 HikariCP Connection Alert!
+• Host: {{ index .Labels "instance" }}
+• Job: {{ index .Labels "job" | default "unknown" }}
+• Condition: Hikaricp Active connections is more than 20 for past 2 minutes
+• Time: {{ printf "%s" .StartsAt }}
+{{ end }}
+
+{{ define "SSLExpirySoon" }}
+🔔 **SSL Expiry Alert**
+• Host/Instance: {{ index .Labels "instance" | default "unknown" }}
+• Domain: {{ index .Labels "instance" | default "unknown" }}
+• Time Left: {{ humanizeDuration (sub (index .Values "A") (now)) }}
+• Condition: SSL certificate expires within 15 days
+• Expiry Date: {{ (index .Annotations "expiry") | default "unknown" }}
+• Alert Time: {{ .StartsAt }}
+{{ end }}
+
+{{ define "default.message" }}
+{{ if gt (len .Alerts.Firing) 0 }}🔥 **Firing Alerts**{{ end }}
+{{ range .Alerts.Firing }}
+{{- $name := .Labels.alertname }}
+
+{{ if eq $name "CephMonDown" }}
+  {{ template "CephMonitorDown" . }}
+{{ else if eq $name "CephMonDownQuorumAtRiskTest" }}
+  {{ template "CephQuorumLoss" . }}
+{{ else if eq $name "CephNodeRootFilesystemFull" }}
+  {{ template "CephNodeRootFilesystemFull" . }}
+{{ else if eq $name "CephNodeDiskspaceWarning" }}
+  {{ template "CephNodeDiskspaceWarning" . }}
+{{ else if eq $name "CephOSDDownHigh" }}
+  {{ template "CephOSDDownHigh" . }}
+{{ else if eq $name "CephPoolGrowthWarning" }}
+  {{ template "CephPoolGrowthWarning" . }}
+{{ else if eq $name "CephPoolFull" }}
+  {{ template "CephPoolFull" . }}
+{{ else if eq $name "CloudStackHostOffline" }}
+  {{ template "CloudStackHostOffline" . }}
+{{ else if eq $name "CloudStackPortDown" }}
+  {{ template "CloudStackPortDown" . }}
+{{ else if eq $name "CloudStackAPIFailure" }}
+  {{ template "CloudStackAPIFailure" . }}
+{{ else if eq $name "CloudStackMgmtSvcDown" }}
+  {{ template "CloudStackMgmtSvcDown" . }}
+{{ else if eq $name "CloudStackUsageSvcDown" }}
+  {{ template "CloudStackUsageSvcDown" . }}
+{{ else if eq $name "CloudStackAgentDown" }}
+  {{ template "CloudStackAgentDown" . }}
+{{ else if eq $name "KVMlibvirtDown" }}
+  {{ template "KVMlibvirtDown" . }}
+{{ else if eq $name "HeapUsedHigh" }}
+  {{ template "HeapUsedHigh" . }}
+{{ else if eq $name "CPUUsageHigh" }}
+  {{ template "CPUUsageHigh" . }}
+{{ else if eq $name "JVMThreadsBlockedHigh" }}
+  {{ template "JVMThreadsBlockedHigh" . }}
+{{ else if eq $name "GCPressureHigh" }}
+  {{ template "GCPressureHigh" . }}
+{{ else if eq $name "DiskUsageHigh" }}
+  {{ template "DiskUsageHigh" . }}
+{{ else if eq $name "RamUsageHigh" }}
+  {{ template "RamUsageHigh" . }}
+{{ else if eq $name "SSLExpirySoon" }}
+  {{ template "SSLExpirySoon" . }}
+{{ else if eq $name "Hikaricp Active connections" }}
+  {{ template "Hikaricp Active connections" . }}
+{{ else }}
+❗ Unknown alert: {{ .Labels.alertname }}
+{{ end }}
+
+{{ end }}
+
+{{ if gt (len .Alerts.Resolved) 0 }}✅ **Resolved Alerts**{{ end }}
+{{ range .Alerts.Resolved }}
+✔️ {{ .Labels.alertname }} resolved on {{ index .Labels.instance | default (index .Labels.hostname | default (index .Labels.ceph_daemon | default "unknown")) }}
+Time: {{ printf "%s" .EndsAt }}
+{{ end }}
+
+{{ end }}

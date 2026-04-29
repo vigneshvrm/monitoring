@@ -1,0 +1,480 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: 1m
+      folder: DB-Alerts
+      interval: 1m
+      rules:
+        - uid: df3vi822xvk00a
+          title: MySQL Service Status
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: 'node_systemd_unit_state{name="mysql.service", state="active"} '
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                        type: eq
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: MySQL service is down on {{ index .Labels "job" }}
+          labels:
+            severity: critical
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: cf3vie14oog74c
+          title: Replication I/O Thread
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: 'mysql_slave_status_slave_io_running '
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                        type: eq
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: "\U0001F6A8 MySQL replication I/O thread stopped on {{ index .Labels \"job\" }}"
+          labels:
+            severity: critical
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: af3vijw2gzv28e
+          title: MySQL Slave SQL Thread
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: 'mysql_slave_status_slave_sql_running '
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                        type: eq
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: "\U0001F6A8 MySQL replication SQL thread stopped on {{ index .Labels \"job\" }}"
+          labels:
+            severity: critical
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: af3viw8fypgxsf
+          title: MySQL Slave Lag
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: mysql_slave_status_seconds_behind_master
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 30
+                        type: gte
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 2m
+          annotations:
+            summary: ⚠️ MySQL replication lag exceeds 30s on {{ index .Labels "job" }}
+          labels:
+            severity: critical
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: af3vjhsljecxsc
+          title: MySQL I/O Performance
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: "rate(mysql_global_status_created_tmp_disk_tables[5m]) \r\n"
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 10
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: ⚠️ High number of disk-based temporary tables — check query efficiency.
+          labels:
+            severity: Warning
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: df3vuyem7cao0e
+          title: MongoDB Service Status
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: mongodb_up
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                        type: eq
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: MongoDB service is down on {{ index .Labels "instance" }}
+          labels:
+            severity: critical
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: ef3w635kz8268f
+          title: MongoDB Replication Lag
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: mongodb_mongod_replset_member_replication_lag
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 10
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: Replication lag >10s on {{ index .Labels "instance" }}
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: df3w69ywbqgaoe
+          title: MongoDB Role Changed
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: mongodb_mongod_replset_my_state {instance="172.16.20.22:9216"}
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: ne
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: Node is not PRIMARY on {{ index .Labels "instance" }}
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
+        - uid: ef3w7k5cxf9q8e
+          title: MongoDB High Connection Usage
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: depejsz2drg8we
+              model:
+                editorMode: code
+                expr: mongodb_connections{state="current",rs_state="1"}
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1000
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: Detected {{ index .Labels "value" }} active connections. Check connection pooling and app behavior.
+          labels:
+            severity: critical
+          isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
