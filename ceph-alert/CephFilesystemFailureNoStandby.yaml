@@ -59,3 +59,5 @@ groups:
       severity: critical
       storage: ceph
     isPaused: false
+    notification_settings:
+      receiver: grafana-default-email

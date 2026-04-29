@@ -55,3 +55,5 @@ groups:
             alertname: SSL Expiry
             severity: warning
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email

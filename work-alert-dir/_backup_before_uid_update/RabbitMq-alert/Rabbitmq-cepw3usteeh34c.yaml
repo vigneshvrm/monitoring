@@ -64,6 +64,8 @@ groups:
             queue: SbQueueEvent
             threshold: "22"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: fepw49bk7xerke
           title: SbWebsocketEvent
           condition: C
@@ -123,6 +125,8 @@ groups:
             queue: SbWebsocketEvent
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: bepw4evy86l1cd
           title: WolfCmpResources
           condition: C
@@ -182,6 +186,8 @@ groups:
             queue: WolfCmpResources
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: eepw4lt0581s0a
           title: WolfCoreServiceCommunicationEvent
           condition: C
@@ -241,6 +247,8 @@ groups:
             queue: WolfCoreServiceCommunicationEvent
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: aepwcsx1a718ga
           title: WolfActionEvent
           condition: C
@@ -300,6 +308,8 @@ groups:
             queue: WolfActionEvent
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: cepwcxd4wwnpca
           title: WolfAlertEvent
           condition: C
@@ -359,6 +369,8 @@ groups:
             queue: WolfAlertEvent
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: depwd1vvs8wsga
           title: WolfAsynchEvent
           condition: C
@@ -418,6 +430,8 @@ groups:
             queue: WolfAsynchEvent
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: fepwd5mtu9qf4f
           title: WolfResourceEvent
           condition: C
@@ -477,6 +491,8 @@ groups:
             queue: WolfResourceEvent
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: bepwd9mj3hatce
           title: WolfUsageEvent
           condition: C
@@ -536,6 +552,8 @@ groups:
             queue: WolfUsageEvent
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: fepwdjvl9wl4wb
           title: WolfEmailTemplate
           condition: C
@@ -595,6 +613,8 @@ groups:
             queue: WolfEmailTemplate
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: fepwdnunx18u8a
           title: sb_sw_alert_queue
           condition: C
@@ -654,6 +674,8 @@ groups:
             queue: sb_sw_alert_queue
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
         - uid: aepwdremga51cf
           title: sb_sw_queue
           condition: C
@@ -713,3 +735,5 @@ groups:
             queue: sb_sw_queue
             threshold: "20"
           isPaused: false
+          notification_settings:
+            receiver: grafana-default-email
