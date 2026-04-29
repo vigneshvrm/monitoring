@@ -8,7 +8,7 @@ groups:
       - uid: heapused-high # Make sure this is unique across all rules
         title: Heap Used High
         condition: A
-        noDataState: Ok
+        noDataState: OK
         execErrState: Error
         for: 2m # 2 minutes above threshold triggers alert
         data:

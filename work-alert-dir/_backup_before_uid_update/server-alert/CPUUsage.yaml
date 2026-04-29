@@ -8,7 +8,7 @@ groups:
       - uid: cpuusage-high
         title: CPU Usage High
         condition: A
-        noDataState: Ok
+        noDataState: OK
         execErrState: Error
         for: 2m # Must be above threshold for 2 minutes
         data:

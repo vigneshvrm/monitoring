@@ -8,7 +8,7 @@ groups:
       - uid: blocked-threads-high
         title: JVM Blocked Threads High
         condition: A
-        noDataState: Ok
+        noDataState: OK
         execErrState: Error
         for: 2m
         data:
